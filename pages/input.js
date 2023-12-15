@@ -1,4 +1,4 @@
-import analyze from '../features/components/analyze'
+import analyzer from '../features/components/analyze'
 
 export default function Input() {
 
@@ -12,7 +12,7 @@ export default function Input() {
       <div>
         <p id="length"></p>
         <textarea id="input_text" onKeyUp={textCount} style={{width:500, height:200}}></textarea>
-        <button onClick={analyze}>解析</button>
+        <button onClick={analyzer}>解析</button>
 
         <p></p>
         <textarea id="parse" style={{width:1024, height:500}}></textarea>

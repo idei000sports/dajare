@@ -4,13 +4,12 @@ import Word from '../components/word'
 const apiKey = process.env.NEXT_PUBLIC_Y_A_K
 const url = process.env.NEXT_PUBLIC_PARSE_URL
 const parse_url = url + apiKey;
-const data = require('../../pages/wordList.json');
-const jsonString = JSON.stringify(data);
-const objectData = JSON.parse(jsonString);
-const json = objectData.words;
+let data = require('../../pages/wordList.json');
+let jsonString = JSON.stringify(data);
+let objectData = JSON.parse(jsonString);
+let json = objectData.words;
+//let arr2 = [];
 
-
-let text = "";
 async function postRequest(query) {
     const response = await fetch(parse_url, {
         method: 'POST',
@@ -24,9 +23,21 @@ async function postRequest(query) {
     });
     return await response.json();
 }
-async function analyze() {
-   
-    const query = document.querySelector("#input_text").value;
+
+
+function loadJson(){
+    data = require('../../pages/wordList.json');
+    jsonString = JSON.stringify(data);
+    objectData = JSON.parse(jsonString);
+    json = objectData.words;
+}
+
+
+let text = "";
+
+
+
+async function analyze(query) {
     const response = await postRequest(query)
     text = response['result']['tokens'].map(x => [x[0], x[1], x[3],x[4]])
 
@@ -61,6 +72,7 @@ async function analyze() {
             }
         }
         if(!bln){
+            //console.log(arr[i])
             arr2.push(arr[i]);
         }
     }
@@ -73,9 +85,47 @@ async function analyze() {
         stringArr.push(deletedChofukuArr[i] + "\n");
     }
 
-    document.getElementById("parse").value = stringArr;
-    document.getElementById("parse").value = document.getElementById("parse").value + ",";
+    return stringArr;
     
 }
 
-export default analyze;
+async function analyzer(){
+    let arr = [];
+    loadJson();
+    const query = document.querySelector("#input_text").value;
+    //console.log(query);
+    let queryArr = [];
+
+    for (let i = 0; i < query.length / 15000; i++) {
+        queryArr.push(query.substr(i * 15000, 15000));
+    }
+    //console.log(queryArr);
+
+    console.log("処理回数" + queryArr.length);
+    for(let i = 0; i < queryArr.length; i++){
+        arr = await analyze(queryArr[i]);
+        if(i != 0){
+        console.log("5秒待つ");
+        await wait(5000);
+        console.log("5秒待った");
+        }
+        console.log("残り回数" + (queryArr.length - (i+1)));
+    }
+    console.log("完了");
+    document.getElementById("parse").value = arr;
+    document.getElementById("parse").value = document.getElementById("parse").value + ",";
+
+
+}
+
+const wait = async (ms) => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+        resolve(); // setTimeoutの第一引数の関数として簡略化できる
+        }, ms)
+    });
+}
+
+
+
+export default analyzer;
