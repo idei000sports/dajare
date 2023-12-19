@@ -1,3 +1,5 @@
+/*
+
 import boin from '../components/boin'
 import Word from '../components/word'
 
@@ -129,3 +131,5 @@ const wait = async (ms) => {
 
 
 export default analyzer;
+
+*/
