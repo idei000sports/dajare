@@ -1,50 +1,46 @@
 import { useState, useEffect } from 'react'
+import supabase from "../features/components/supabase"
 import boin from '../features/components/boin'
 
 export default function Home() {
+  /*
   const data = require('./wordList.json');
   const jsonString = JSON.stringify(data);
   const objectData = JSON.parse(jsonString);
-
-  const [json, setJson] = useState(objectData.words);
   const [list, setList] = useState([]);
+  const [json, setJson] = useState(objectData.words);
+  */
   const [word, setWord] = useState("");
+  const [tests, setTests] = useState([]);
 
   const onChangeWord = ((e) => {
     setWord(boin(e.target.value));
   })
 
+  async function db(boin) {
+    const { data: words, error } = await supabase.from("words").select('word, kana').eq('boin', word);
+    setTests(words);
+  }
+
   
   useEffect(() => {
-    setList();
-    const filteredArray = [];
-    for (let item in json){    
-      if (json[item]["母音"] == word){
-        //console.log(json[item]);
-        filteredArray.push(json[item]);
-      }
-    }
-    setList(filteredArray);
-    //console.log(list);
-    
+    db(word);   
   }, [word])//useEffect
   
   return (
 
-
     <div>
-        <title>index</title>
+        <title>ダジャレ替え歌作成機</title>
         <form>
         <p>ひらがな/カタカナで入力</p>
         <input type="text" onChange={onChangeWord} />
         <p>{word}</p>
         </form>
         
-
         <ul>
-          {list.map(item => (
-            <li key={item.index}>
-              <strong>{item.単語}</strong> {item.かな}
+          {tests.map((item, index) => (
+            <li key={index}>
+              <strong>{item.word}</strong> {item.kana}
             </li>
           ))}
         </ul>
