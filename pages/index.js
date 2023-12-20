@@ -18,8 +18,24 @@ export default function Home() {
   })
 
   async function db(boin) {
-    const { data: words, error } = await supabase.from("words").select('word, kana').eq('boin', word);
+
+    const { data: words, error } = await supabase
+    .from("test_kanas")
+    .select('*').eq('boin', boin)
+    /*
+    const { data: t, err} = await supabase
+    .from("test_word")
+    .select("*").eq("id", words.word_id)
+    */
+
+    if(error != null){
+      //console.log(error)
+    }else{
+      //console.log(words)
+    }
+    //console.log(t);
     setTests(words);
+
   }
 
   
