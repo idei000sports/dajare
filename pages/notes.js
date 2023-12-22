@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react'
 
 
 export default function Notes() {
+  <>
+  </>
+  /*
   //配列だから[]で初期化してる
   const [tests, setTests] = useState([]);
   useEffect(() => {
@@ -50,5 +53,5 @@ export default function Notes() {
     </div>
     </>
   )
-
+*/
 }
