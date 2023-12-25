@@ -81,6 +81,7 @@ export default function Home() {
 
   useEffect(() => {
     if(mode == "tango"){
+      setIchibuText(["",""])
       setInfo("ひらがな/カタカナで入力してください")
       setSample("だじゃれ");
       setClick(true);
@@ -108,23 +109,24 @@ export default function Home() {
   return (
 
     <>
-      <div className="container mx-auto">
+      <Header />
+      <div className="container mx-auto font-body">
 
         <title>ダジャレ替え歌作成機</title>
-        <Header />
+
 
 
         <div className="flex-auto px-5">
           <div className="flex flex-col text-center w-full mb-5">
-            <div className="flex mx-auto border-2 border-indigo-500 rounded overflow-hidden mt-6">
-              <button className={`py-1 px-4 focus:outline-none ${isClicked === true ? 'bg-indigo-500 text-white' : '' }`} onClick={() => {onClickMode("tango")}}>単語</button>
-              <button className={`py-1 px-4 focus:outline-none ${isClicked === false ? 'bg-indigo-500 text-white' : '' }`} onClick={() => {onClickMode("ichibu")}}>一部</button>
+            <div className="flex mx-auto border-2 border-orange rounded overflow-hidden mt-6 text-orange font-bold">
+              <button className={`py-1 px-4 focus:outline-none ${isClicked === true ? 'bg-light-orange text-white' : '' }`} onClick={() => {onClickMode("tango")}}>単語</button>
+              <button className={`py-1 px-4 focus:outline-none ${isClicked === false ? 'bg-light-orange text-white' : '' }`} onClick={() => {onClickMode("ichibu")}}>一部</button>
             </div>
             
           </div>
 
             <div className="flex-auto">
-              <textarea type="text" id="textbox" name="input" onChange={onChangeWord} placeholder={sample} className="w-full bg-gray-100 border border-gray-300 text-base"></textarea>
+              <textarea type="text" id="textbox" name="input" onChange={onChangeWord} placeholder={sample} className="w-full bg-gray-100 border border-orange text-base"></textarea>
               <label htmlFor="input" className="text-sm text-gray-600">{info}</label>
           </div>
         </div>
@@ -133,10 +135,10 @@ export default function Home() {
           <div className="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
       
             <ul className="w-full">
-              <li className="border-b-4 border-neutral-100 border-opacity-100 pt-5 dark:border-opacity-50">{text}</li>
+              <li className="text-center text-lg font-semibold border-b-2 border-orange border-neutral-100 border-opacity-100 pt-5 pb-5 dark:border-opacity-50">{text}</li>
               {wordList.map((item, index) => (
-                <li key={index} className="border-b-4 border-neutral-100 border-opacity-100 pt-5 dark:border-opacity-50">
-                  {ichibuText[0]}<ruby className="text-xl font-normal">{item.word}<rt className="text-s font-normal py-2 text-gray-600">{item.kana}</rt></ruby>{ichibuText[1]}
+                <li key={index} className="border-b-2 border-orange border-neutral-100 border-opacity-100 pt-8 dark:border-opacity-50">
+                  <span className="text-xl">{ichibuText[0]}</span><span>  </span><ruby className="text-xl font-medium">{item.word}<rt className="text-sm font-normal py-4 text-gray-600">{item.kana}</rt></ruby><span> </span>  <span className="text-xl">{ichibuText[1]}</span>
                 </li>
               ))}
             </ul>
@@ -144,6 +146,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      
     </>
   )
 }

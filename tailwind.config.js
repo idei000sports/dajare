@@ -7,7 +7,17 @@ module.exports = {
   "./components/**/*.{js,ts,jsx,tsx,mdx}"
 ],
   theme: {
-    extend: {},
+    extend: {
+      colors:{
+        'blue': '#525FE1',
+        'orange': '#F86F03',
+        'light-orange': '#FFA41B',
+        'white': '#FFF6F4',
+      },
+      fontFamily:{
+        body:['Noto Sans JP'],
+      },
+    },
   },
   plugins: [
     plugin(function({addVariant}){
