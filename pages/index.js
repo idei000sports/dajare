@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import supabase from "../features/components/supabase"
 import boin from '../features/components/boin'
 import Select from 'react-select'
@@ -12,6 +12,8 @@ export default function Home() {
     { value: 'tango', label: '単語' },
     { value: 'ichibu', label: '一部' },
   ]
+
+  const [isClicked, setClick] = useState(false)
 
 
   const [word, setWord] = useState("");
@@ -66,9 +68,11 @@ export default function Home() {
 
 
   //モード切り替えスイッチ
-  const onChangeMode = ((e) => {
-    setMode(e.value)
-  })
+  const onClickMode = useCallback((mode) => {
+    setMode(mode);
+  }, []);
+    //setMode(e.value)
+
 
   //検索ワードから検索する
   useEffect(() => {
@@ -79,9 +83,11 @@ export default function Home() {
     if(mode == "tango"){
       setInfo("ひらがな/カタカナで入力してください")
       setSample("だじゃれ");
+      setClick(true);
     }else if(mode =="ichibu"){
       setInfo("変換したいひらがな/カタカナを「」でくくってください")
       setSample("「いしばし」を叩いて渡る")
+      setClick(false);
     }else{
 
     }
@@ -102,43 +108,40 @@ export default function Home() {
   return (
 
     <>
-      <title>ダジャレ替え歌作成機</title>
-      <Header />
+      <div className="container mx-auto">
 
-      <div className="container px-5 py-12 mx-auto">
-        <div className="flex mx-auto w-full px-2 space-y-4 ">
-          <div className="flex-grow w-1/5">
-            <label htmlFor="mode" className="text-sm text-gray-600">モード</label>
-            <Select
-            name="mode"
-            options={options}
-            inputId="mode"
-            instanceId="mode"
-            onChange={onChangeMode}
-            defaultValue={options[0]}
-            className="w-full text-base outline-none text-gray-700 transition-colors duration-200 ease-in-out"
-            />
+        <title>ダジャレ替え歌作成機</title>
+        <Header />
+
+
+        <div className="flex-auto px-5">
+          <div className="flex flex-col text-center w-full mb-5">
+            <div className="flex mx-auto border-2 border-indigo-500 rounded overflow-hidden mt-6">
+              <button className={`py-1 px-4 focus:outline-none ${isClicked === true ? 'bg-indigo-500 text-white' : '' }`} onClick={() => {onClickMode("tango")}}>単語</button>
+              <button className={`py-1 px-4 focus:outline-none ${isClicked === false ? 'bg-indigo-500 text-white' : '' }`} onClick={() => {onClickMode("ichibu")}}>一部</button>
+            </div>
+            
           </div>
 
-          <div className="flex-grow w-4/5">
-            <label htmlFor="input" className="text-sm text-gray-600">{info}</label>
-            <textarea type="text" id="textbox" name="input" onChange={onChangeWord} placeholder={sample} className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-transparent focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 transition-colors duration-200 ease-in-out"></textarea>
+            <div className="flex-auto">
+              <textarea type="text" id="textbox" name="input" onChange={onChangeWord} placeholder={sample} className="w-full bg-gray-100 border border-gray-300 text-base"></textarea>
+              <label htmlFor="input" className="text-sm text-gray-600">{info}</label>
           </div>
         </div>
-      </div>
 
-      <div className="container px-5 py-2 mx-auto" >
-        <div className="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
+        <div className="container" >
+          <div className="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
       
-          <ul className="w-full">
-            <li className="border-b-4 border-neutral-100 border-opacity-100 pt-5 dark:border-opacity-50">{text}</li>
-            {wordList.map((item, index) => (
-              <li key={index} className="border-b-4 border-neutral-100 border-opacity-100 pt-5 dark:border-opacity-50">
-                {ichibuText[0]}<ruby className="text-xl font-normal">{item.word}<rt className="text-s font-normal py-2 text-gray-600">{item.kana}</rt></ruby>{ichibuText[1]}
-              </li>
-            ))}
-          </ul>
+            <ul className="w-full">
+              <li className="border-b-4 border-neutral-100 border-opacity-100 pt-5 dark:border-opacity-50">{text}</li>
+              {wordList.map((item, index) => (
+                <li key={index} className="border-b-4 border-neutral-100 border-opacity-100 pt-5 dark:border-opacity-50">
+                  {ichibuText[0]}<ruby className="text-xl font-normal">{item.word}<rt className="text-s font-normal py-2 text-gray-600">{item.kana}</rt></ruby>{ichibuText[1]}
+                </li>
+              ))}
+            </ul>
 
+          </div>
         </div>
       </div>
     </>

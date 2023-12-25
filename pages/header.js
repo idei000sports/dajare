@@ -6,7 +6,7 @@ export default function Header() {
             
             <div className="container">
                 <div className="mx-auto flex p-5 flex-row items-center justify-between">
-                    <div class="justify-start items-center">
+                    <div className="justify-start items-center">
                     <a className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
                         <img src="icon.svg" viewBox="0 0 24 24" className="w-10 h-10 text-white p-2 bg-yellow-500 rounded-full" />
                         <span className="flex ml-3 text-xl">機械</span>
