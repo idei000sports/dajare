@@ -112,7 +112,6 @@ export default function Home() {
       <Header />
       <div className="container mx-auto font-body">
 
-        <title>ダジャレ替え歌作成機</title>
 
 
 

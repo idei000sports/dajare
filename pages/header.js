@@ -5,6 +5,7 @@ export default function Header() {
     //青　オレンジ　薄オレンジ　白
     return (
         <>
+	<title>title</title>
         <div className="bg-light-orange font-body">
             
             <div className="container mx-auto">
